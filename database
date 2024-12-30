@@ -1,0 +1,61 @@
+
+CREATE TABLE `bill` (
+  Day DATE NOT NULL,
+  bill_id NVARCHAR(255) NOT NULL,
+  booked_id NVARCHAR(255) NOT NULL,
+  username NVARCHAR(255) NOT NULL,
+  room_id NVARCHAR(255) NOT NULL,
+  total_time NVARCHAR(255) NOT NULL,
+  room_type NVARCHAR(255) NOT NULL,
+  price NVARCHAR(255) NOT NULL,
+  total_cost NVARCHAR(255) NOT NULL,
+  hotel_id NVARCHAR(255) NOT NULL,
+  PRIMARY KEY (bill_id));
+  
+create table `User`(
+	user_id int auto_increment primary key,
+    user_name nvarchar(100) not null,
+    user_password varchar(20) not null,
+    user_contact varchar(12) unique,
+    user_position varchar(30) not null
+);
+create table Hotel(
+	hotel_id int auto_increment primary key,
+    hotel_name varchar(50) not null,
+    hotel_address varchar(255) not null unique,
+    hotel_description nvarchar(500),
+    hotel_img varchar(255) 
+);
+create table Room(
+	room_id varchar(10) primary key,
+    room_type nvarchar(50) not null,
+    price long not null,
+    room_description nvarchar(500),
+    room_status varchar(20),
+    room_img varchar(255),
+    hotel_id int,
+	foreign key (hotel_id) references Hotel(hotel_id)
+);
+
+
+
+create	table BookedRoom(
+	booked_id int auto_increment primary key,
+    user_id int,
+    room_id varchar(10),
+    hotel_id int,
+    check_in datetime not null,
+    check_out datetime not null,
+    total_cost long not null,
+    foreign key (user_id) references `User`(user_id),
+    foreign key (room_id) references Room(room_id),
+    foreign key (hotel_id) references Hotel(hotel_id)
+);
+
+create table Feedback(
+	feedback_id int auto_increment primary key,
+    booked_id int,
+    rate float ,
+    `comment` nvarchar(500),
+    foreign key (booked_id) references BookedRoom(booked_id)
+);
